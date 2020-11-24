@@ -9,5 +9,5 @@ jobs:
     steps:
     - uses: AlexanderWert/epic-manager@v1
       with:
-        repo-token: "${{ secrets.GITHUB_TOKEN }}"
+        github-token: "${{ secrets.GITHUB_TOKEN }}"
         config-path: .github/epics-config.yml
