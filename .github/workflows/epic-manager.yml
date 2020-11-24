@@ -1,0 +1,13 @@
+name: "Epics Manager"
+on:
+  issues:
+    types: [opened, closed, reopened]
+
+jobs:
+  triage:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: AlexanderWert/epic-manager@v1
+      with:
+        repo-token: "${{ secrets.GITHUB_TOKEN }}"
+        config-path: .github/epics-config.yml
