@@ -1,0 +1,7 @@
+# add/remove my-label for all issues
+epic-labels:
+  - test
+  - abc
+  - term3
+repos:
+  - AlexanderWert/test
