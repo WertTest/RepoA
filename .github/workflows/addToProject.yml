@@ -16,7 +16,7 @@ jobs:
     steps:
     - name: Assign issues and pull requests with milestones to project
       uses: srggrs/assign-one-project-github-action@1.2.0
-      if: github.event === 'issue' && github.event.issue.milestone
+      if: github.event == 'issue' && github.event.issue.milestone
       with:
         project: 'https://github.com/orgs/WertTest/projects/1'
         column_name: 'Backlog'
