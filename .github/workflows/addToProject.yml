@@ -15,14 +15,14 @@ jobs:
     name: Assign milestoned to Project
     steps:
     - name: Assign issues and pull requests with milestones to project
-      uses: elastic/assign-one-project-github-action@1.2.0
+      uses: elastic/assign-one-project-github-action@1.2.1
       if: github.event.issue && github.event.issue.milestone
       with:
         project: 'https://github.com/orgs/WertTest/projects/1'
         project_id: '5875539'
         column_name: 'Backlog'
     - name: Assign issues and pull requests with milestones to project
-      uses: elastic/assign-one-project-github-action@1.2.0
+      uses: elastic/assign-one-project-github-action@1.2.1
       if: github.event.action == 'opened' && github.event.pull_request
       with:
         project: 'https://github.com/orgs/WertTest/projects/1'
