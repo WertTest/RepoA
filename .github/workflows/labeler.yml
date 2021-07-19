@@ -12,7 +12,8 @@ jobs:
     - uses: AlexanderWert/issue-labeler@v2.3
       with:
         repo-token: "${{ secrets.GITHUB_TOKEN }}"
-        configuration-path: .github/labeler.yml
+        configuration-path: .github/labeler.yml        
+        enable-versioned-regex: 0
     - uses: AlexanderWert/get-user-teams-membership@v1
       id: checkUserMember
       with:
@@ -24,3 +25,4 @@ jobs:
       with:
         repo-token: "${{ secrets.GITHUB_TOKEN }}"
         configuration-path: .github/team-labeler.yml
+        enable-versioned-regex: 0
