@@ -17,7 +17,7 @@ jobs:
       id: checkUserMember
       with:
         username: ${{ github.actor }}
-        team: 'customTeam'
+        team: 'customteam'
         GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}
     - if: ${{ !steps.checkUserMember.outputs.isTeamMember }}
       uses: AlexanderWert/issue-labeler@v2.3
