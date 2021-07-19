@@ -14,3 +14,15 @@ jobs:
         repo-token: "${{ secrets.GITHUB_TOKEN }}"
         configuration-path: .github/labeler.yml
         enable-versioned-regex: 0
+    - uses: AlexanderWert/get-user-teams-membership@v1
+      id: checkUserMember
+      with:
+        username: ${{ github.actor }}
+        team: 'octocats'
+        GITHUB_TOKEN: ${{ secrets.PAT }}
+    - if: ${{ !steps.checkUserMember.outputs.isTeamMember }}
+      uses: AlexanderWert/issue-labeler@v2.3
+      with:
+        repo-token: "${{ secrets.GITHUB_TOKEN }}"
+        configuration-path: .github/team-labeler.yml
+        enable-versioned-regex: 0
