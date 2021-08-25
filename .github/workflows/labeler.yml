@@ -21,6 +21,7 @@ jobs:
         team: 'customteam'
         usernamesToExclude: |
           abc
+          AlexanderWert
         GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}
     - name: Show Outputs
       run: |
