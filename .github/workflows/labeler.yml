@@ -22,7 +22,11 @@ jobs:
         usernamesToExclude: |
           abc
         GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}
-    - if: ${{ steps.checkUserMember.outputs.isTeamMember != 'true' }}
+    - name: Show Outputs
+      run: |
+        echo "::debug::isTeamMember: ${{ steps.checkUserMember.outputs.isTeamMember }}"
+        echo "::debug::isExcluded: ${{ steps.checkUserMember.outputs.isExcluded }}"
+    - if: steps.checkUserMember.outputs.isTeamMember != 'true' && steps.checkUserMember.outputs.isExcluded != 'true'
       uses: AlexanderWert/issue-labeler@v2.3
       with:
         repo-token: "${{ secrets.GITHUB_TOKEN }}"
