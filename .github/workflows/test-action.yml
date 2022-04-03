@@ -1,0 +1,12 @@
+name: "Testing"
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  blub:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Show issue
+      run: |
+        echo "${{ github.issue }}"
