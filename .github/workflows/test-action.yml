@@ -13,6 +13,6 @@ jobs:
       with:
         token: "${{ secrets.TEST_TOKEN }}"
         metaIssue: "${{ toJSON(github.event.issue) }}"
-    - name: Show issue
+    - name: Show Output
       run: |
-        echo "${{ github.event.issue.title }}"
+        echo "${{ steps.create_step.outputs.createdIssues }}"
