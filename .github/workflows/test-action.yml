@@ -7,9 +7,12 @@ jobs:
   blub:
     runs-on: ubuntu-latest
     steps:
+    - name: Create issues
+      uses: WertTest/testaction@0.0.1
+      id: create_step
+      with:
+        token: "${{ secrets.GITHUB_TOKEN }}"
+        metaIssue: "${{ toJSON(github.event.issue) }}"
     - name: Show issue
       run: |
         echo "${{ github.event.issue.title }}"
-    - name: Show Body
-      run: |
-        echo "${{ toJSON(github.event.issue) }}"
