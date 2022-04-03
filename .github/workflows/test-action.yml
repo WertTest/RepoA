@@ -12,4 +12,4 @@ jobs:
         echo "${{ github.event.issue.title }}"
     - name: Show Body
       run: |
-        echo "${{ github.event.issue.body }}"
+        echo "${{ toJSON(github.event.issue.body) }}"
