@@ -9,4 +9,4 @@ jobs:
     steps:
     - name: Show issue
       run: |
-        echo "${{ github.issue }}"
+        echo "${{ github.event.issue.title }}"
