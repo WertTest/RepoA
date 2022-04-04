@@ -7,8 +7,17 @@ jobs:
   blub:
     runs-on: ubuntu-latest
     steps:
+    - name: check user
+      uses: AlexanderWert/get-user-teams-membership@v1.0.4
+      id: checkUserMember
+      with:
+        username: ${{ github.actor }}
+        team: 'customteam'
+        usernamesToExclude: |
+          abc
+        GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}
     - name: Create issues
-      if: contains(github.event.issue.labels.*.name, 'meta') && contains(github.event.issue.labels.*.name, 'apm-agents')
+      if: steps.checkUserMember.outputs.isTeamMember == 'true' && contains(github.event.issue.labels.*.name, 'meta') && contains(github.event.issue.labels.*.name, 'apm-agents')
       uses: WertTest/testaction@0.0.1
       id: create_step
       with:
