@@ -25,6 +25,7 @@ jobs:
         metaIssue: "${{ toJSON(github.event.issue) }}"
         bodyRegex: "(.*)(<!---repos-start--->.*<!---repos-end--->)(.*)"
         labelsToExclude: "meta,apm-agents"
+        specLabel: "spec-poc"
     - name: Show Output
       run: |
         echo "${{ steps.create_step.outputs.createdIssues }}"
