@@ -13,6 +13,8 @@ jobs:
       with:
         token: "${{ secrets.TEST_TOKEN }}"
         metaIssue: "${{ toJSON(github.event.issue) }}"
+        bodyRegex: "(.*)(<!---repos-start--->.*<!---repos-end--->)(.*)"
+        labelsToExclude: "meta,apm-agents"
     - name: Show Output
       run: |
         echo "${{ steps.create_step.outputs.createdIssues }}"
