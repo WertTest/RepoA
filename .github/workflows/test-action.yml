@@ -15,7 +15,7 @@ jobs:
         team: 'customteam'
         usernamesToExclude: |
           abc
-        GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.TEST_TOKEN }}
     - name: Create issues
       if: steps.checkUserMember.outputs.isTeamMember == 'true' && contains(github.event.issue.labels.*.name, 'meta') && contains(github.event.issue.labels.*.name, 'apm-agents')
       uses: WertTest/testaction@0.0.1
