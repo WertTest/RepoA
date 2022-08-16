@@ -1,0 +1,20 @@
+name: "APM Agents meta issue handler"
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  meta-issue-handler:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Create sub issues
+      if: contains(github.event.issue.labels.*.name, 'meta') && contains(github.event.issue.labels.*.name, 'apm-agents')
+      uses: AlexanderWert/gh-action-meta-subissues-creator@1.0.1
+      id: create_sub_issues
+      with:
+        token: "${{ secrets.WERT_TOKEN }}"
+        metaIssue: "${{ toJSON(github.event.issue) }}"
+        bodyRegex: "(.*)(<!---repos-start--->.*<!---repos-end--->)(.*)"
+        labelsToExclude: "meta,apm-agents"
+        specLabels: "spec-poc,apm-agents"
+        
