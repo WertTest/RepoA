@@ -10,10 +10,40 @@ jobs:
     - if: github.event.label.name == 'ui'
       uses: actions-ecosystem/action-add-labels@v1
       with:
-        labels: assign::ui
-    - if: github.event.label.name == 'agent-java'
-      uses: AlexanderWert/issue-labeler@v2.3
+        labels: assign::apm-ui
+    - if: github.event.label.name == 'server' || github.event.label.name == 'aws-λ-extension' || github.event.label.name == 'agent-go'
+      uses: actions-ecosystem/action-add-labels@v1
       with:
-        repo-token: "${{ secrets.GITHUB_TOKEN }}"
-        configuration-path: .github/assign-label-java.yml        
-        enable-versioned-regex: 0
+        labels: assign::apm-server
+    - if: github.event.label.name == 'agent-java'
+      uses: actions-ecosystem/action-add-labels@v1
+      with:
+        labels: assign::apm-agent-java
+    - if: github.event.label.name == 'agent-dotnet'
+      uses: actions-ecosystem/action-add-labels@v1
+      with:
+        labels: assign::apm-agent-dotnet
+    - if: github.event.label.name == 'agent-nodejs'
+      uses: actions-ecosystem/action-add-labels@v1
+      with:
+        labels: assign::apm-agent-nodejs
+    - if: github.event.label.name == 'agent-python'
+      uses: actions-ecosystem/action-add-labels@v1
+      with:
+        labels: assign::apm-agent-python
+    - if: github.event.label.name == 'agent-php'
+      uses: actions-ecosystem/action-add-labels@v1
+      with:
+        labels: assign::apm-agent-php
+    - if: github.event.label.name == 'agent-ruby'
+      uses: actions-ecosystem/action-add-labels@v1
+      with:
+        labels: assign::apm-agent-ruby
+    - if: github.event.label.name == 'agent-android'
+      uses: actions-ecosystem/action-add-labels@v1
+      with:
+        labels: assign::apm-agent-android
+    - if: github.event.label.name == 'agent-ios'
+      uses: actions-ecosystem/action-add-labels@v1
+      with:
+        labels: assign::apm-agent-ios
