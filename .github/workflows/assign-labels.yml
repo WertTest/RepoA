@@ -11,58 +11,9 @@ jobs:
       uses: actions-ecosystem/action-add-labels@v1
       with:
         labels: assign::ui
-    - if: github.event.label.name == 'server' || github.event.label.name == 'aws-λ-extension' || github.event.label.name == 'agent-go'
-      uses: AlexanderWert/issue-labeler@v2.3
-      with:
-        repo-token: "${{ secrets.GITHUB_TOKEN }}"
-        configuration-path: .github/assign-label-server.yml        
-        enable-versioned-regex: 0
     - if: github.event.label.name == 'agent-java'
       uses: AlexanderWert/issue-labeler@v2.3
       with:
         repo-token: "${{ secrets.GITHUB_TOKEN }}"
         configuration-path: .github/assign-label-java.yml        
         enable-versioned-regex: 0
-    - if: github.event.label.name == 'agent-dotnet'
-      uses: AlexanderWert/issue-labeler@v2.3
-      with:
-        repo-token: "${{ secrets.GITHUB_TOKEN }}"
-        configuration-path: .github/assign-label-dotnet.yml        
-        enable-versioned-regex: 0
-    - if: github.event.label.name == 'agent-nodejs'
-      uses: AlexanderWert/issue-labeler@v2.3
-      with:
-        repo-token: "${{ secrets.GITHUB_TOKEN }}"
-        configuration-path: .github/assign-label-nodejs.yml        
-        enable-versioned-regex: 0
-    - if: github.event.label.name == 'agent-python'
-      uses: AlexanderWert/issue-labeler@v2.3
-      with:
-        repo-token: "${{ secrets.GITHUB_TOKEN }}"
-        configuration-path: .github/assign-label-python.yml        
-        enable-versioned-regex: 0
-    - if: github.event.label.name == 'agent-php'
-      uses: AlexanderWert/issue-labeler@v2.3
-      with:
-        repo-token: "${{ secrets.GITHUB_TOKEN }}"
-        configuration-path: .github/assign-label-php.yml        
-        enable-versioned-regex: 0
-    - if: ${{ github.event.label.name == 'agent-ruby'
-      uses: AlexanderWert/issue-labeler@v2.3
-      with:
-        repo-token: "${{ secrets.GITHUB_TOKEN }}"
-        configuration-path: .github/assign-label-ruby.yml        
-        enable-versioned-regex: 0
-    - if: github.event.label.name == 'agent-ios'
-      uses: AlexanderWert/issue-labeler@v2.3
-      with:
-        repo-token: "${{ secrets.GITHUB_TOKEN }}"
-        configuration-path: .github/assign-label-ios.yml        
-        enable-versioned-regex: 0
-    - if: github.event.label.name == 'agent-android'
-      uses: AlexanderWert/issue-labeler@v2.3
-      with:
-        repo-token: "${{ secrets.GITHUB_TOKEN }}"
-        configuration-path: .github/assign-label-android.yml        
-        enable-versioned-regex: 0
-  
