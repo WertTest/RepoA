@@ -1,0 +1,16 @@
+name: "Assign Labels"
+on:
+  issues:
+    types: [labeled]
+
+jobs:
+  assing-labels:
+    runs-on: ubuntu-latest
+    steps:
+    - if: contains(github.event.issue.labels.*.name, 'agent-java')
+      uses: AlexanderWert/issue-labeler@v2.3
+      with:
+        repo-token: "${{ secrets.GITHUB_TOKEN }}"
+        configuration-path: .github/assign-label-java.yml        
+        enable-versioned-regex: 0
+  
