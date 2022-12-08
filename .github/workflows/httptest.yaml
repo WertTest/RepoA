@@ -10,9 +10,9 @@ jobs:
     - name: Deploy Stage
       uses: fjogeleit/http-request-action@v1
       with:
-        url: "https://env4h2kq1w4u.x.pipedream.net/${{ github.event.issue.number }}/${{ github.event.label.name }}?repo=${{ github.event.issue.url }}"
+        url: "https://env4h2kq1w4u.x.pipedream.net/"
         method: 'POST'
-        username: 'testuser'
-        password: 'testpw'
+        username: 'test'
+        password: ${{ secrets.HTTP_TEST_TOKEN }}
         customHeaders: '{"Content-Type": "application/json"}'
-        data: '{"key_1": "value_1", "key_2": "value_2"}'
+        data: '{"url": "${{ github.event.issue.url }}", "label": "${{ github.event.label.name }}"}'
