@@ -20,7 +20,7 @@ jobs:
         uses: wow-actions/auto-comment@v1
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          issueOpened: |
+          issuesOpened: |
             👋 @{{ author }}
             
             Please add one of the following labels to this issue:
