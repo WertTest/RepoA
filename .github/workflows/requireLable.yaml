@@ -2,6 +2,8 @@ name: Require Issue Label
 on:
   issues:
     types: [opened]
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 jobs:
   label-comment:
     runs-on: ubuntu-latest
@@ -9,7 +11,6 @@ jobs:
       - id: checkLabels
         uses: mheap/github-action-required-labels@v2
         with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           mode: exactly
           count: 1
           labels: 'server, ui, agent'
