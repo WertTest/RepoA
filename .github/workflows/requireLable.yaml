@@ -1,0 +1,27 @@
+name: Require Issue Label
+on:
+  issues:
+    types: [opened]
+jobs:
+  label-comment:
+    runs-on: ubuntu-latest
+    steps:
+      - id: checkLabels
+        uses: mheap/github-action-required-labels@v2
+        with:
+          mode: exactly
+          count: 1
+          labels: "server, ui, agent"
+          exit_type: success
+      - name: Add comment for community PR
+        if: steps.checkLabels.outputs.status == 'failure'
+        uses: wow-actions/auto-comment@v1
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          pullRequestOpened: |
+            👋 @{{ author }}
+            
+            Please add one of the following labels to this issue:
+            - `ui`
+            - `server`
+            - `agent`
