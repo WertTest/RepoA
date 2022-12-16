@@ -11,7 +11,7 @@ jobs:
         with:
           mode: exactly
           count: 1
-          labels: "server, ui, agent"
+          labels: 'server, ui, agent'
           exit_type: success
       - name: Add comment for community PR
         if: steps.checkLabels.outputs.status == 'failure'
