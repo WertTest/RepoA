@@ -1,7 +1,7 @@
 name: "Regex Tester"
 on:
   issues:
-    types: [opened]
+    types: [labeled]
 
 jobs:
   apply-label:
@@ -12,7 +12,7 @@ jobs:
         with:
           result-encoding: string
           script: |
-            const urgencyLabel = context.issue.labels.map(l => l.name).find(name => name.startsWith('urgency:'));
+            const urgencyLabel = context.label.name;
             return urgencyLabel ?? "";
       - name: Show export
         run: echo "${{ steps.regex.outputs.result }}"
