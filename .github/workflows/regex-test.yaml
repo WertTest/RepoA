@@ -10,7 +10,6 @@ jobs:
       - uses: actions/github-script@v6
         id: regex
         with:
-          github-token: ${{ secrets.MY_PAT }}
           result-encoding: string
           script: |
             const urgencyLabel = context.issue.labels.map(l => l.name).find(name => name.startsWith('urgency:'));
