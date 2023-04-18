@@ -12,6 +12,7 @@ jobs:
         with:
           result-encoding: string
           script: |
+            console.log(context);
             const urgencyLabel = context.label.name;
             return urgencyLabel ?? "";
       - name: Show export
