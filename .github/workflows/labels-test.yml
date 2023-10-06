@@ -49,4 +49,4 @@ jobs:
         with:
           path: .github/test-config.json
       - name: show labels
-        run: echo "${{fromJson(steps.config.outputs.content).teams[AREA_LABEL]}}"
+        run: echo "${{fromJson(steps.config.outputs.content).teams[$AREA_LABEL]}}"
