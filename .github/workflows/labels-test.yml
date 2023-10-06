@@ -41,5 +41,12 @@ jobs:
       URGENCY_LABEL: ${{needs.labels.outputs.urgency_label}}
       DEPLOYMENT_TYPE_LABEL: ${{needs.labels.outputs.deployment_type_label}}
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Read config
+        id: config
+        uses: juliangruber/read-file-action@v1
+        with:
+          path: .github/test-config.json
       - name: show labels
-        run: echo "$AREA_LABEL - $URGENCY_LABEL - $DEPLOYMENT_TYPE_LABEL"
+        run: echo "${{fromJson(steps.config.outputs.content).teams[AREA_LABEL]}}"
