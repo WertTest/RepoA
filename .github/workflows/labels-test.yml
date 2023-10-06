@@ -5,7 +5,6 @@ on:
 
 jobs:
   labels:
-    if: startsWith( github.event.label.name, 'area::' )
     runs-on: ubuntu-latest
     outputs:
       area_label: ${{ steps.step_area_label.outputs.result }}
@@ -27,12 +26,11 @@ jobs:
           script: |
             const urgencyLabel = context.payload.issue.labels.map(l => l.name).find(name => name.startsWith('urgency:'));
             return urgencyLabel;
+      - name: show event label
+        run: echo "event label - ${{github.event.label.name}}"
   assign-engineer:
     needs: labels
     runs-on: ubuntu-latest
     steps:
       - name: show labels
-        env:
-          OUTPUT1: ${{needs.labels.outputs.area_label}}
-          OUTPUT2: ${{needs.labels.outputs.urgency_label}}
-        run: echo "$OUTPUT1 $OUTPUT2"
+        run: echo "${{needs.labels.outputs.area_label}} ${{needs.labels.outputs.urgency_label}}"
