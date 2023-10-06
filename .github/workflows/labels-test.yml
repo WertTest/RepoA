@@ -6,6 +6,7 @@ on:
 jobs:
   labels:
     runs-on: ubuntu-latest
+    if: startsWith( github.event.label.name, 'area::' )
     outputs:
       area_label: ${{ steps.step_area_label.outputs.result }}
       urgency_label: ${{ steps.step_urgency_label.outputs.result }}
