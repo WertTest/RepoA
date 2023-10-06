@@ -10,6 +10,7 @@ jobs:
     outputs:
       area_label: ${{ steps.step_area_label.outputs.result }}
       urgency_label: ${{ steps.step_urgency_label.outputs.result }}
+      deployment_type_label: ${{ steps.step_deployment_type_label.outputs.result }}
     steps:
       - name: Get area label
         id: step_area_label
@@ -17,21 +18,24 @@ jobs:
         with:
           result-encoding: string
           script: |
-            const areaLabel = context.payload.issue.labels.map(l => l.name).find(name => name.startsWith('area::'));
-            return areaLabel;
+            return context.payload.issue.labels.map(l => l.name).find(name => name.startsWith('area::'));
       - name: Get urgency label
         id: step_urgency_label
         uses: actions/github-script@v6
         with:
           result-encoding: string
           script: |
-            const urgencyLabel = context.payload.issue.labels.map(l => l.name).find(name => name.startsWith('urgency:'));
-            return urgencyLabel;
-      - name: show event label
-        run: echo "event label - ${{github.event.label.name}}"
+            return context.payload.issue.labels.map(l => l.name).find(name => name.startsWith('urgency:'));
+      - name: Get deployment-type label
+        id: step_deployment_type_label
+        uses: actions/github-script@v6
+        with:
+          result-encoding: string
+          script: |
+            return context.payload.issue.labels.map(l => l.name).find(name => name.startsWith('deployment-type::'));
   assign-engineer:
     needs: labels
     runs-on: ubuntu-latest
     steps:
       - name: show labels
-        run: echo "${{needs.labels.outputs.area_label}} ${{needs.labels.outputs.urgency_label}}"
+        run: echo "${{needs.labels.outputs.area_label}} - ${{needs.labels.outputs.urgency_label}} - ${{needs.labels.outputs.deployment_type_label}}"
