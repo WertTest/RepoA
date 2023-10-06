@@ -1,4 +1,4 @@
-name: "Assign Engineer On-duty"
+name: "Test labels retrieval"
 on:
   issues:
     types: [ labeled ]
