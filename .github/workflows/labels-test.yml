@@ -37,9 +37,9 @@ jobs:
     needs: labels
     runs-on: ubuntu-latest
     env:
-      AREA_LABEL: ${{needs.labels.outputs.area_label}}
-      URGENCY_LABEL: ${{needs.labels.outputs.urgency_label}}
-      DEPLOYMENT_TYPE_LABEL: ${{needs.labels.outputs.deployment_type_label}}
+      area_label: ${{needs.labels.outputs.area_label}}
+      urgency_label: ${{needs.labels.outputs.urgency_label}}
+      deployment_type_label: ${{needs.labels.outputs.deployment_type_label}}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -49,4 +49,4 @@ jobs:
         with:
           path: .github/test-config.json
       - name: show labels
-        run: echo "${{fromJson(steps.config.outputs.content).teams[$AREA_LABEL]}}"
+        run: echo "${{fromJson(steps.config.outputs.content).teams[env.area_label]}}"
