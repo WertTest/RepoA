@@ -1,0 +1,38 @@
+name: "Assign Engineer On-duty"
+on:
+  issues:
+    types: [ labeled ]
+
+jobs:
+  labels:
+    if: startsWith( github.event.label.name, 'area::' )
+    runs-on: ubuntu-latest
+    outputs:
+      area_label: ${{ steps.step_area_label.outputs.result }}
+      urgency_label: ${{ steps.step_urgency_label.outputs.result }}
+    steps:
+      - name: Get area label
+        id: step_area_label
+        uses: actions/github-script@v6
+        with:
+          result-encoding: string
+          script: |
+            const areaLabel = context.payload.issue.labels.map(l => l.name).find(name => name.startsWith('area::'));
+            return areaLabel;
+      - name: Get urgency label
+        id: step_urgency_label
+        uses: actions/github-script@v6
+        with:
+          result-encoding: string
+          script: |
+            const urgencyLabel = context.payload.issue.labels.map(l => l.name).find(name => name.startsWith('urgency:'));
+            return urgencyLabel;
+  assign-engineer:
+    needs: labels
+    runs-on: ubuntu-latest
+    steps:
+      - name: show labels
+        env:
+          OUTPUT1: ${{needs.labels.outputs.area_label}}
+          OUTPUT2: ${{needs.labels.outputs.urgency_label}}
+        run: echo "$OUTPUT1 $OUTPUT2"
