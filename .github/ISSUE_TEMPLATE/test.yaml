@@ -1,0 +1,27 @@
+name: Alex Bug Report
+description: Alex File a bug report.
+title: "[Bug]: "
+labels: ["xyz"]
+projects: ["WertTest/3"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to fill out this bug report!
+  - type: input
+    id: contact
+    attributes:
+      label: Authors
+      description: How will write the blog post?
+      placeholder: ex. John Doe
+    validations:
+      required: false
+  - type: textarea
+    id: blog-description
+    attributes:
+      label: What happened?
+      description: Also tell us, what did you expect to happen?
+      placeholder: What is the blog about?
+      value: "A bug happened!"
+    validations:
+      required: true
