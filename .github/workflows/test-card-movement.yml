@@ -1,13 +1,13 @@
 name: Card moved
 
 on:
-  project_card:
+  pull_request:
     types:
-      - moved
+      - closed
 
 jobs:
   add-to-project:
-    name: Add issue to project
+    name: PR closed
     runs-on: ubuntu-latest
     steps:
     - name: Show data
