@@ -16,3 +16,10 @@ jobs:
       #run: echo "${{ fromJson(steps.config.outputs.content).persons[steps.pagerduty.outputs.person_id].name }}"      
       run: |
         echo "$GITHUB_CONTEXT"
+    - name: Extract slug
+      uses: AlexanderWert/github-extract-content-from-pr-diff@main
+      with:
+        github-token: ${{github.token}}
+        pathToScan: "/"
+        newFilesOnly: true
+        regex: "todo"
