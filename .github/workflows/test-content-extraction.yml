@@ -20,6 +20,6 @@ jobs:
       uses: AlexanderWert/github-extract-content-from-pr-diff@main
       with:
         github-token: ${{github.token}}
-        pathToScan: "/"
+        pathToScan: "articles"
         newFilesOnly: true
-        regex: "todo"
+        regex: '^slug: "(.*)"$'
