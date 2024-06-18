@@ -1,0 +1,14 @@
+---
+title: "This is my title"
+slug: "this-is-the-slug"
+date: "2024-06-17"
+description: "bliblablub"
+author:
+  - slug: authro
+image: "image.jpg"
+tags:
+  - slug: xyz
+  - slug: abc
+---
+
+This is some content
