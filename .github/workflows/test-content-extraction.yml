@@ -18,7 +18,7 @@ jobs:
       uses: AlexanderWert/github-extract-content-from-pr-diff@1.0.1
       with:
         github-token: ${{github.token}}
-        pathToScan: "articles"
+        pathToScan: "_content/articles"
         newFilesOnly: true
         regex: '^\+\s+-\s?slug:\s*"?(opentelemetry)"?\s*$'
   add_to_project:
@@ -32,7 +32,7 @@ jobs:
       uses: AlexanderWert/github-extract-content-from-pr-diff@1.0.1
       with:
         github-token: ${{github.token}}
-        pathToScan: "articles"
+        pathToScan: "_content/articles"
         newFilesOnly: true
         regex: '^\+slug:\s*"?([\w-]+)"?\s*$'
     - name: Show article slug
@@ -42,7 +42,7 @@ jobs:
       uses: AlexanderWert/github-extract-content-from-pr-diff@1.0.1
       with:
         github-token: ${{github.token}}
-        pathToScan: "articles"
+        pathToScan: "_content/articles"
         newFilesOnly: true
         regex: '^\+title:\s*"(.+)"\s*$'
     - name: Show article title
