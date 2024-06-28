@@ -1,4 +1,4 @@
-name: Card moved
+name: Notify on published OTel blog post
 
 on:
   pull_request:
@@ -9,17 +9,18 @@ jobs:
   check_is_otel:
     name: Check is OTel
     runs-on: ubuntu-latest
+    if: github.event.pull_request.merged == true
     outputs:
-      is_otel: ${{ steps.otel.outputs.capturedContent == 'xyz' }}
+      is_otel: ${{ steps.otel.outputs.capturedContent == 'opentelemetry' }}
     steps:
     - name: Is OTel
       id: otel
-      uses: AlexanderWert/github-extract-content-from-pr-diff@main
+      uses: AlexanderWert/github-extract-content-from-pr-diff@0.0.1
       with:
         github-token: ${{github.token}}
         pathToScan: "articles"
         newFilesOnly: true
-        regex: '^\+\s+-\s?slug:\s*"?(xyz)"?\s*$'
+        regex: '^\+\s+-\s?slug:\s*"?(opentelemetry)"?\s*$'
   add_to_project:
     name: Run job
     runs-on: ubuntu-latest
@@ -28,11 +29,17 @@ jobs:
     steps:
     - name: Extract slug
       id: slug
-      uses: AlexanderWert/github-extract-content-from-pr-diff@main
+      uses: AlexanderWert/github-extract-content-from-pr-diff@0.0.1
       with:
         github-token: ${{github.token}}
         pathToScan: "articles"
         newFilesOnly: true
         regex: '^\+slug:\s*"?([\w-]+)"?\s*$'
-    - name: Show Slug
-      run: echo "The slug is - ${{ steps.slug.outputs.capturedContent }}"
+    - name: Extract title
+      id: title
+      uses: AlexanderWert/github-extract-content-from-pr-diff@0.0.1
+      with:
+        github-token: ${{github.token}}
+        pathToScan: "articles"
+        newFilesOnly: true
+        regex: '^\+title:\s*"(.+)"\s*$'
