@@ -15,7 +15,7 @@ jobs:
     steps:
     - name: Is OTel
       id: otel
-      uses: AlexanderWert/github-extract-content-from-pr-diff@0.0.1
+      uses: AlexanderWert/github-extract-content-from-pr-diff@1.0.1
       with:
         github-token: ${{github.token}}
         pathToScan: "articles"
@@ -29,17 +29,21 @@ jobs:
     steps:
     - name: Extract slug
       id: slug
-      uses: AlexanderWert/github-extract-content-from-pr-diff@0.0.1
+      uses: AlexanderWert/github-extract-content-from-pr-diff@1.0.1
       with:
         github-token: ${{github.token}}
         pathToScan: "articles"
         newFilesOnly: true
         regex: '^\+slug:\s*"?([\w-]+)"?\s*$'
+    - name: Show article slug
+      run: echo "Article slug is '${{ steps.slug.outputs.capturedContent }}'"
     - name: Extract title
       id: title
-      uses: AlexanderWert/github-extract-content-from-pr-diff@0.0.1
+      uses: AlexanderWert/github-extract-content-from-pr-diff@1.0.1
       with:
         github-token: ${{github.token}}
         pathToScan: "articles"
         newFilesOnly: true
         regex: '^\+title:\s*"(.+)"\s*$'
+    - name: Show article title
+      run: echo "Article title is '${{ steps.title.outputs.capturedContent }}'"
