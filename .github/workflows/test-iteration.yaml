@@ -46,10 +46,10 @@ jobs:
           # Extract the "login" field from the JSON response
           START_DATE=$(echo "$RESPONSE" | jq -r '.data.organization.projectV2.fields.nodes[] | select(. != {}) | .configuration.iterations | first | .startDate')
 
-          echo "GitHub username is: $LOGIN"
+          echo "date: $START_DATE"
 
           # Save to GitHub Actions output (can be used in later steps)
-          echo "start_date=$START_DATE" >> $GITHUB_ENV
+          echo "start_date=$START_DATE" >> $GITHUB_OUTPUT
   show_iteration:
     needs: get_iteration
     runs-on: ubuntu-latest
