@@ -41,6 +41,8 @@ jobs:
             }
           }')
 
+          echo "$RESPONSE" | jq '.'
+          
           # Extract the "login" field from the JSON response
           START_DATE=$(echo "$RESPONSE" | jq -r '.data.organization.projectV2.fields.nodes[] | select(. != {}) | first | .configuration.iterations[] | first | .startDate')
 
