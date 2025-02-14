@@ -1,0 +1,57 @@
+name: "Iteration Test"
+
+on:
+  workflow_dispatch:
+
+jobs:
+  get_iteration:
+    runs-on: ubuntu-latest
+    outputs:
+      iteration_start_date: ${{ steps.get_iteration.outputs.start_date }}
+    steps:
+      - name: Install GitHub CLI and jq
+        run: sudo apt install gh jq -y
+      - name: Authenticate GitHub CLI
+        run: echo "${{ secrets.ALEX_TOKEN }}" | gh auth login --with-token
+      - name: Retrieve current iteration
+        id: get_iteration
+        run: |
+          RESPONSE=$(gh api graphql -f query='
+          query {
+            organization(login: "elastic") {
+              projectV2(number: 1830) {
+                id
+                fields(first: 20) {
+                  nodes {
+                    ... on ProjectV2IterationField {
+                      id
+                      name
+                      configuration {
+                        iterations {
+                          id
+                          title
+                          startDate
+                          duration
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }')
+
+          # Extract the "login" field from the JSON response
+          START_DATE=$(echo "$RESPONSE" | jq -r '.data.organization.projectV2.fields.nodes[] | select(. != {}) | first | .configuration.iterations[] | first | .startDate')
+
+          echo "GitHub username is: $LOGIN"
+
+          # Save to GitHub Actions output (can be used in later steps)
+          echo "start_date=$START_DATE" >> $GITHUB_ENV
+  show_iteration:
+    needs: get_iteration
+    runs-on: ubuntu-latest
+    steps:
+      - name: Show iteration start date
+        run: |
+          echo "Current iteration started: ${{ needs.get_iteration.outputs.iteration_start_date }}"
