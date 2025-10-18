@@ -1,9 +1,9 @@
 ---
-title: {{TITLE}}
-author: {{AUTHOR}}
-date: {{DATE}}
+title: ${TITLE}
+author: ${AUTHOR}
+date: ${DATE}
 ---
 
-# {{TITLE}}
+# ${TITLE}
 
-{{BODY}}
+${BODY}
