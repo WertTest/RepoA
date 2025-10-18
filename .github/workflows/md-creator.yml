@@ -1,0 +1,63 @@
+name: Create Markdown from Form
+
+on:
+  workflow_dispatch:
+    inputs:
+      title:
+        description: "Document title"
+        required: true
+      author:
+        description: "Author name"
+        required: true
+        default: "${{ github.actor }}"
+      date:
+        description: "Date (YYYY-MM-DD)"
+        required: true
+      body:
+        description: "Main content"
+        required: true
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Make filename-safe slug
+        id: slug
+        run: |
+          t="${{ github.event.inputs.title }}"
+          # slugify: lowercase, replace spaces/non-alnum with hyphens, squeeze hyphens
+          s="$(echo "$t" | tr '[:upper:]' '[:lower:]' | sed -E 's/[^a-z0-9]+/-/g; s/^-+|-+$//g')"
+          echo "value=$s" >> "$GITHUB_OUTPUT"
+
+      - name: Render template
+        run: |
+          mkdir -p docs
+          sed -e "s/{{TITLE}}/${{ github.event.inputs.title }}/g" \
+              -e "s/{{AUTHOR}}/${{ github.event.inputs.author }}/g" \
+              -e "s/{{DATE}}/${{ github.event.inputs.date }}/g" \
+              -e "s|{{BODY}}|${{ github.event.inputs.body }}|g" \
+              templates/post.md.tpl > "test_dir/${{ steps.slug.outputs.value }}.md"
+
+      - name: Commit & push change
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -b chore/${{ steps.slug.outputs.value }}
+          git add -A
+          git commit -m "New Test: ${{ github.event.inputs.title }}"
+          git push -u origin chore/${{ steps.slug.outputs.value }}
+      - name: Create PR
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh pr create \
+            --base main \
+            --head chore/${{ steps.slug.outputs.value }} \
+            --title "New Test: ${{ github.event.inputs.title }}" \
+            --body "Adding new test: ${{ github.event.inputs.title }}"
