@@ -15,6 +15,21 @@ on:
       body:
         description: "Main content"
         required: true
+  workflow_call:
+    inputs:
+      title:
+        description: Doc title
+        required: true
+        type: string
+      author:
+        required: true
+        type: string
+      date:
+        required: true
+        type: string
+      body:
+        required: true
+        type: string
 
 permissions:
   contents: write
@@ -23,13 +38,30 @@ permissions:
 jobs:
   generate:
     runs-on: ubuntu-latest
+    env:
+      TITLE:  ${{ inputs.title  || github.event.inputs.title }}
+      AUTHOR: ${{ inputs.author || github.event.inputs.author }}
+      DATE:   ${{ inputs.date   || github.event.inputs.date }}
+      BODY:   ${{ inputs.body   || github.event.inputs.body }}
     steps:
+      - name: Normalize inputs
+        id: norm
+        run: |
+          echo "title=${{ inputs.title || github.event.inputs.title }}" >> "$GITHUB_OUTPUT"
+          echo "author=${{ inputs.author || github.event.inputs.author }}" >> "$GITHUB_OUTPUT"
+          echo "date=${{ inputs.date || github.event.inputs.date }}"       >> "$GITHUB_OUTPUT"
+          # Multiline-safe output for BODY:
+          {
+            echo 'body<<EOF'
+            echo '${{ inputs.body || github.event.inputs.body }}'
+            echo 'EOF'
+          } >> "$GITHUB_OUTPUT"
       - uses: actions/checkout@v4
 
       - name: Make filename-safe slug
         id: slug
         run: |
-          t="${{ github.event.inputs.title }}"
+          t="${{ steps.norm.outputs.title }}"
           # slugify: lowercase, replace spaces/non-alnum with hyphens, squeeze hyphens
           s="$(echo "$t" | tr '[:upper:]' '[:lower:]' | sed -E 's/[^a-z0-9]+/-/g; s/^-+|-+$//g')"
           echo "value=$s" >> "$GITHUB_OUTPUT"
@@ -37,10 +69,10 @@ jobs:
       - name: Render template
         run: |
           mkdir -p test_dir
-          sed -e "s/{{TITLE}}/${{ github.event.inputs.title }}/g" \
-              -e "s/{{AUTHOR}}/${{ github.event.inputs.author }}/g" \
-              -e "s/{{DATE}}/${{ github.event.inputs.date }}/g" \
-              -e "s|{{BODY}}|${{ github.event.inputs.body }}|g" \
+          sed -e "s/{{TITLE}}/${{ steps.norm.outputs.title }}/g" \
+              -e "s/{{AUTHOR}}/${{ steps.norm.outputs.author }}/g" \
+              -e "s/{{DATE}}/${{ steps.norm.outputs.date }}/g" \
+              -e "s|{{BODY}}|${{ steps.norm.outputs.body }}|g" \
               templates/post.md.tpl > "test_dir/${{ steps.slug.outputs.value }}.md"
 
       - name: Commit & push change
@@ -49,7 +81,7 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git checkout -b chore/${{ steps.slug.outputs.value }}
           git add -A
-          git commit -m "New Test: ${{ github.event.inputs.title }}"
+          git commit -m "New Test: ${{ steps.norm.outputs.title }}"
           git push -u origin chore/${{ steps.slug.outputs.value }}
       - name: Create PR
         env:
@@ -58,5 +90,5 @@ jobs:
           gh pr create \
             --base master \
             --head chore/${{ steps.slug.outputs.value }} \
-            --title "New Test: ${{ github.event.inputs.title }}" \
-            --body "Adding new test: ${{ github.event.inputs.title }}"
+            --title "New Test: ${{ steps.norm.outputs.title }}" \
+            --body "Adding new test: ${{ steps.norm.outputs.title }}"
