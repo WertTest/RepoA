@@ -35,10 +35,11 @@ jobs:
             core.setOutput('author', author || context.payload.issue.user.login);
             core.setOutput('date', date);
             core.setOutput('content', content);
-  tirgger_create_pr:
-    uses: ./.github/workflows/md-creator.yml
-    with:
-      title: ${{ steps.fields.outputs.title }}
-      author: ${{ steps.fields.outputs.author }}
-      date: ${{ steps.fields.outputs.date }}
-      body: ${{ steps.fields.outputs.content }}
+            
+      - name: Call PR workflow
+        uses: ./.github/workflows/md-creator.yml
+        with:
+          title: ${{ steps.fields.outputs.title }}
+          author: ${{ steps.fields.outputs.author }}
+          date: ${{ steps.fields.outputs.date }}
+          body: ${{ steps.fields.outputs.content }}
