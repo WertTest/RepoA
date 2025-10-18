@@ -60,15 +60,18 @@ jobs:
           # slugify: lowercase, replace spaces/non-alnum with hyphens, squeeze hyphens
           s="$(echo "$t" | tr '[:upper:]' '[:lower:]' | sed -E 's/[^a-z0-9]+/-/g; s/^-+|-+$//g')"
           echo "value=$s" >> "$GITHUB_OUTPUT"
-
+          
       - name: Render template
         run: |
-          mkdir -p test_dir
-          sed -e "s/{{TITLE}}/${{ steps.norm.outputs.title }}/g" \
-              -e "s/{{AUTHOR}}/${{ steps.norm.outputs.author }}/g" \
-              -e "s/{{DATE}}/${{ steps.norm.outputs.date }}/g" \
-              -e "s|{{BODY}}|${{ steps.norm.outputs.body }}|g" \
-              templates/post.md.tpl > "test_dir/${{ steps.slug.outputs.value }}.md"
+          out="test_dir/${{ steps.slug.outputs.value }}.md"
+          mkdir -p "$(dirname "$out")"
+
+          export TITLE='${{ steps.fields.outputs.title }}'
+          export AUTHOR='${{ steps.fields.outputs.author }}'
+          export DATE='${{ steps.fields.outputs.date }}'
+          export BODY='${{ steps.fields.outputs.content }}'   # can be multiline
+
+          envsubst < templates/post.md.tpl > "$out"
 
       - name: Commit & push change
         run: |
