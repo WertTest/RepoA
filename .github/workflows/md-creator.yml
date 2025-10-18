@@ -56,7 +56,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           gh pr create \
-            --base main \
+            --base master \
             --head chore/${{ steps.slug.outputs.value }} \
             --title "New Test: ${{ github.event.inputs.title }}" \
             --body "Adding new test: ${{ github.event.inputs.title }}"
