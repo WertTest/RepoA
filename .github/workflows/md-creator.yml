@@ -66,10 +66,10 @@ jobs:
           out="test_dir/${{ steps.slug.outputs.value }}.md"
           mkdir -p "$(dirname "$out")"
 
-          export TITLE='${{ steps.fields.outputs.title }}'
-          export AUTHOR='${{ steps.fields.outputs.author }}'
-          export DATE='${{ steps.fields.outputs.date }}'
-          export BODY='${{ steps.fields.outputs.content }}'   # can be multiline
+          export TITLE='${{ steps.norm.outputs.title }}'
+          export AUTHOR='${{ steps.norm.outputs.author }}'
+          export DATE='${{ steps.norm.outputs.date }}'
+          export BODY='${{ steps.norm.outputs.body }}'   # can be multiline
 
           envsubst < templates/post.md.tpl > "$out"
 
