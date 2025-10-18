@@ -36,7 +36,7 @@ jobs:
 
       - name: Render template
         run: |
-          mkdir -p docs
+          mkdir -p test_dir
           sed -e "s/{{TITLE}}/${{ github.event.inputs.title }}/g" \
               -e "s/{{AUTHOR}}/${{ github.event.inputs.author }}/g" \
               -e "s/{{DATE}}/${{ github.event.inputs.date }}/g" \
