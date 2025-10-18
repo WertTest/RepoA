@@ -1,0 +1,28 @@
+name: Index Markdown to Elasticsearch
+
+on:
+  push:
+    paths:
+      - 'test_dir/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  index-md:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Bulk upsert markdown to Elasticsearch
+        uses: actions/github-script@v7
+        env:
+          ES_URL: ${{ secrets.ES_URL }}
+          ES_API_KEY: ${{ secrets.ES_API_KEY }}
+          ES_INDEX: ${{ vars.ES_INDEX }}
+        with:
+          script: |
+            // Load and run your module. It receives helpers from github-script.
+            const run = require('./.github/scripts/export-to-es.js');
+            await run({ github, context, core, fetch, require });
