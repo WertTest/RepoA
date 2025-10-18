@@ -38,11 +38,6 @@ permissions:
 jobs:
   generate:
     runs-on: ubuntu-latest
-    env:
-      TITLE:  ${{ inputs.title  || github.event.inputs.title }}
-      AUTHOR: ${{ inputs.author || github.event.inputs.author }}
-      DATE:   ${{ inputs.date   || github.event.inputs.date }}
-      BODY:   ${{ inputs.body   || github.event.inputs.body }}
     steps:
       - name: Normalize inputs
         id: norm
