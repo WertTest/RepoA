@@ -9,7 +9,6 @@ on:
       author:
         description: "Author name"
         required: true
-        default: "${{ github.actor }}"
       date:
         description: "Date (YYYY-MM-DD)"
         required: true
