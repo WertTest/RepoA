@@ -1,0 +1,44 @@
+name: Issue → Markdown
+
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  issues: read
+
+jobs:
+  extract:
+    if: contains(github.event.issue.labels.*.name, 'new-doc')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Extract fields from issue form
+        id: fields
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const body = context.payload.issue.body || '';
+            // Issue Forms send a YAML-ish block; but GitHub exposes parsed fields in the API under 'issue.body' as plain markdown.
+            // A simple extractor using headings produced by Issue Forms:
+            function pick(label) {
+              const re = new RegExp(`###\\s+${label}[\\s\\S]*?\\n\\n([\\s\\S]*?)(\\n###|$)`, 'i');
+              const m = body.match(re);
+              return (m ? m[1].trim() : '');
+            }
+            const title = pick('Title');
+            const author = pick('Author');
+            const date = pick('Date');
+            const content = pick('Body');
+            core.setOutput('title', title);
+            core.setOutput('author', author || context.payload.issue.user.login);
+            core.setOutput('date', date);
+            core.setOutput('content', content);
+  tirgger_create_pr:
+    uses: ./.github/workflows/md-creator.yml
+    with:
+      title: ${{ steps.fields.outputs.title }}
+      author: ${{ steps.fields.outputs.author }}
+      date: ${{ steps.fields.outputs.date }}
+      body: ${{ steps.fields.outputs.content }}
