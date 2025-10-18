@@ -1,0 +1,32 @@
+name: New document
+description: Submit details to generate a Markdown file
+title: "Doc: <short title>"
+labels: ["new-doc"]
+body:
+  - type: input
+    id: title
+    attributes:
+      label: Title
+      placeholder: "Awesome Post"
+    validations:
+      required: true
+  - type: input
+    id: author
+    attributes:
+      label: Author
+      placeholder: "Jane Doe"
+    validations:
+      required: true
+  - type: input
+    id: date
+    attributes:
+      label: Date (YYYY-MM-DD)
+    validations:
+      required: true
+  - type: textarea
+    id: body
+    attributes:
+      label: Body
+      description: "Main content (Markdown supported)"
+    validations:
+      required: true
