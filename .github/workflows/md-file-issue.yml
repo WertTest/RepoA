@@ -11,6 +11,11 @@ jobs:
   extract:
     if: contains(github.event.issue.labels.*.name, 'new-doc')
     runs-on: ubuntu-latest
+    outputs:
+      title:  ${{ steps.fields.outputs.title }}
+      author: ${{ steps.fields.outputs.author }}
+      date:   ${{ steps.fields.outputs.date }}
+      body:   ${{ steps.fields.outputs.content }}
     steps:
       - uses: actions/checkout@v4
 
@@ -35,11 +40,13 @@ jobs:
             core.setOutput('author', author || context.payload.issue.user.login);
             core.setOutput('date', date);
             core.setOutput('content', content);
-            
-      - name: Call PR workflow
-        uses: ./.github/workflows/md-creator.yml
-        with:
-          title: ${{ steps.fields.outputs.title }}
-          author: ${{ steps.fields.outputs.author }}
-          date: ${{ steps.fields.outputs.date }}
-          body: ${{ steps.fields.outputs.content }}
+
+  create-pr:
+    needs: extract
+    uses: ./.github/workflows/md-creator.yml
+    with:
+      title:  ${{ needs.extract.outputs.title }}
+      author: ${{ needs.extract.outputs.author }}
+      date:   ${{ needs.extract.outputs.date }}
+      body:   ${{ needs.extract.outputs.body }}
+    secrets: inherit 
