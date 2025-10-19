@@ -3,8 +3,13 @@ name: Index Markdown to Elasticsearch
 on:
   push:
     paths:
-      - 'test_dir/**'
+      - 'decision_records/**'
   workflow_dispatch:
+
+env:
+  TARGET_DIR: decision_records
+  SCRIPT_FILE: .github/scripts/export-to-es.js
+  ES_INDEX: decision_records
 
 permissions:
   contents: read
@@ -21,8 +26,22 @@ jobs:
           ES_URL: ${{ secrets.ES_URL }}
           ES_API_KEY: ${{ secrets.ES_API_KEY }}
           ES_INDEX: ${{ vars.ES_INDEX }}
+          TARGET_DIR: ${{ vars.TARGET_DIR }}
+          SCRIPT_FILE: ${{ vars.SCRIPT_FILE }}
         with:
           script: |
-            // Load and run your module. It receives helpers from github-script.
-            const run = require('./.github/scripts/export-to-es.js');
-            await run({ github, context, core, fetch, require });
+            const path = require('path');
+            const fs = require('fs');
+
+            const rel = process.env.SCRIPT_FILE;
+            if (!rel) core.setFailed('SCRIPT_FILE env var is not set');
+
+            // Resolve relative to the repo workspace
+            const full = path.resolve(process.env.GITHUB_WORKSPACE, rel);
+
+            if (!fs.existsSync(full)) {
+              core.setFailed(`Script not found: ${full}`);
+            } else {
+              const run = require(full);
+              await run({ github, context, core, fetch, require });
+            }
